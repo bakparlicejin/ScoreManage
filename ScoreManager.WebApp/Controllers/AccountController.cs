@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Models;
+using ScoreManager.ServiceInterface;
+using ScoreManager.WebApp.Models;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -14,10 +16,13 @@ namespace ScoreManager.WebApp.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly ISqlSugarClient _sqlSugarClient;
-        public AccountController(ISqlSugarClient sqlSugarClient, ILogger<AccountController> logger)
+        private readonly IUserService _userService;
+
+        public AccountController(ISqlSugarClient sqlSugarClient, ILogger<AccountController> logger, IUserService userService)
         {
             _sqlSugarClient = sqlSugarClient;
             _logger = logger;
+            _userService = userService;
         }
         public IActionResult Login()
         {
@@ -28,10 +33,12 @@ namespace ScoreManager.WebApp.Controllers
         [HttpPost]
         public IActionResult Login(string userName, string passWord, string returl)
         {
+            var user= _userService.GetUserByNameAndPass(userName, passWord);
+            if (user == null) return Json(ApiResult<EDU_USER>.Error("用户名或密码错误"));
             List<Claim> claims = new List<Claim>()
             {
-                new Claim(type:ClaimTypes.Name,value:userName),
-                new Claim("PassWord",passWord)
+                new Claim(type:ClaimTypes.Name,value:user.USERNAME),
+                new Claim("PassWord",user.PASSWORD)
             };
             ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims, "customer"));
             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, new AuthenticationProperties()

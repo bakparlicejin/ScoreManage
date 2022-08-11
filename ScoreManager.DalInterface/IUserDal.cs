@@ -9,5 +9,6 @@ namespace ScoreManager.DalInterface
 {
     public interface IUserDal:IBaseDal<EDU_USER>
     {
+        public EDU_USER GetUserByNameAndPass(string userName, string passWord);
     }
 }

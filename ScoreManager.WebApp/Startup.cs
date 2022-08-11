@@ -14,6 +14,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 
 namespace ScoreManager
@@ -30,7 +32,12 @@ namespace ScoreManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddJsonOptions(option =>
+            {
+                option.JsonSerializerOptions.Encoder= JavaScriptEncoder.Create(UnicodeRanges.All);
+            });
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserDal, UserDal>();
 
             services.AddScoped<ISqlSugarClient>(option =>
             {

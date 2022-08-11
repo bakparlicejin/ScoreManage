@@ -11,8 +11,15 @@ namespace ScoreManager.ServiceImpl
 {
     public class UserService : BaseService<EDU_USER>, IUserService
     {
+        private IUserDal _userDal;
         public UserService(IUserDal userDal) : base(userDal)
         {
+            _userDal = userDal;
+        }
+
+        public EDU_USER GetUserByNameAndPass(string userName, string passWord)
+        {
+           return _userDal.GetUserByNameAndPass(userName, passWord);
         }
     }
 }

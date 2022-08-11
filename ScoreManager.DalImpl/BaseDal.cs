@@ -10,7 +10,7 @@ namespace ScoreManager.DalImpl
 {
     public class BaseDal<T> where T : class ,new()
     {
-        private  ISqlSugarClient _sqlSugarClient { get; set; }
+        protected  ISqlSugarClient _sqlSugarClient { get; set; }
         
         public BaseDal(ISqlSugarClient sqlSugarClient)
         {

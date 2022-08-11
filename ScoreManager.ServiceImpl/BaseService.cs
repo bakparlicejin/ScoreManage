@@ -11,38 +11,38 @@ namespace ScoreManager.ServiceImpl
 {
     public class BaseService<T> where T : class, new()
     {
-        private IBaseDal<T> _baseDal;
+        public IBaseDal<T> _currentDal;
 
         public BaseService(IBaseDal<T> baseDal)
         {
-            _baseDal= baseDal;
+            _currentDal= baseDal;
         }
 
 
         public bool Add(T t)
         {
-            return _baseDal.Add(t);
+            return _currentDal.Add(t);
         }
 
         public List<T> Query()
         {
-            return _baseDal.Query();
+            return _currentDal.Query();
         }
 
         public bool Update(T t)
         {
-            return _baseDal.Update(t);
+            return _currentDal.Update(t);
         }
 
         public bool Delete(T t)
         {
-            return _baseDal.Delete(t); ;
+            return _currentDal.Delete(t); ;
         }
 
         public List<T> QueryPageData(int pageIndex, int pageSize, out int totalCount, Expression<Func<T, bool>> where, Expression<Func<T, object>> orderby, OrderByType orderByType)
         {
             totalCount = 0;
-            return _baseDal.QueryPageData(pageIndex, pageSize, out totalCount, where, orderby, orderByType);
+            return _currentDal.QueryPageData(pageIndex, pageSize, out totalCount, where, orderby, orderByType);
 
         }
     }
