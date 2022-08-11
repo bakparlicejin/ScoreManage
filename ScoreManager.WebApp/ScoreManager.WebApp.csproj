@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.16" />
+    <PackageReference Include="SqlSugarCore" Version="5.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ScoreManager.DalImpl\ScoreManager.DalImpl.csproj" />
+    <ProjectReference Include="..\ScoreManager.ServiceImpl\ScoreManager.ServiceImpl.csproj" />
+    <ProjectReference Include="..\ScoreManager.ServiceInterface\ScoreManager.ServiceInterface.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\resource\" />
+  </ItemGroup>
+
+</Project>
