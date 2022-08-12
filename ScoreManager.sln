@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScoreManager.DalImpl", "Sco
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScoreManager.WebApp", "ScoreManager.WebApp\ScoreManager.WebApp.csproj", "{6D837C03-0C64-45F5-87BD-2F11B672B918}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBFirstConsole", "DBFirstConsole\DBFirstConsole.csproj", "{E00DAA6B-243A-4AA4-BBCB-8EAE8190F7B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBFirstConsole", "DBFirstConsole\DBFirstConsole.csproj", "{E00DAA6B-243A-4AA4-BBCB-8EAE8190F7B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeFirstConsole", "CodeFirstConsole\CodeFirstConsole.csproj", "{1D954899-7614-4BAE-AB88-B84B44B849C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{E00DAA6B-243A-4AA4-BBCB-8EAE8190F7B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E00DAA6B-243A-4AA4-BBCB-8EAE8190F7B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E00DAA6B-243A-4AA4-BBCB-8EAE8190F7B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D954899-7614-4BAE-AB88-B84B44B849C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D954899-7614-4BAE-AB88-B84B44B849C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D954899-7614-4BAE-AB88-B84B44B849C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D954899-7614-4BAE-AB88-B84B44B849C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
