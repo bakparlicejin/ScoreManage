@@ -34,6 +34,10 @@ namespace Models
            /// Nullable:True
            /// </summary>           
            public string NAME {get;set;}
+        /// <summary>
+        /// 用户id
+        /// </summary>
+        public long? USERID { get; set; }
 
     }
 }

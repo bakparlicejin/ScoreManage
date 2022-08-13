@@ -16,9 +16,10 @@ namespace ScoreManager.DalImpl
         {
             _sqlSugarClient = sqlSugarClient;
         }
-        public bool Add(T t)
+        public int Add(T t)
         {
-          return  _sqlSugarClient.Insertable<T>(t).ExecuteCommand() > 0;
+            
+          return _sqlSugarClient.Insertable<T>(t).ExecuteReturnIdentity(); ;
         }
 
         public List<T> Query()
@@ -35,7 +36,26 @@ namespace ScoreManager.DalImpl
         {
             return _sqlSugarClient.Deleteable<T>(t).ExecuteCommand() > 0;
         }
+        public void TransactionOperation(Action<ISqlSugarClient> action) 
+        {
+            try
+            {
+                
+                _sqlSugarClient.Ado.BeginTran();
+                action(this._sqlSugarClient);
+                _sqlSugarClient.Ado.CommitTran();
+            }
+            catch (Exception ex)
+            {
+                _sqlSugarClient.Ado.RollbackTran();
+                throw ex;
+            }
+        }
 
+        public List<T> QueryByWhere(Expression<Func<T, bool>> where)
+        {
+            return _sqlSugarClient.Queryable<T>().Where(where).ToList();
+        }
         public List<T> QueryPageData(int pageIndex, int pageSize, out int totalCount, Expression<Func<T, bool>>  where, Expression<Func<T, object>> orderby, OrderByType orderByType )
         {
             totalCount = 0;

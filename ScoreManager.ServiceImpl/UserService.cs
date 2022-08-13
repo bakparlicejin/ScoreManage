@@ -21,5 +21,10 @@ namespace ScoreManager.ServiceImpl
         {
            return _userDal.GetUserByNameAndPass(userName, passWord);
         }
+
+        public bool IsExist(string userName)
+        {
+            return _userDal.QueryByWhere(c => c.USERNAME == userName).Any();
+        }
     }
 }

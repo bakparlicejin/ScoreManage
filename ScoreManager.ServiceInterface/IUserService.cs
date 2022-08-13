@@ -12,5 +12,6 @@ namespace ScoreManager.ServiceInterface
     public interface IUserService : IBaseSerice<EDU_USER>
     {
         public EDU_USER GetUserByNameAndPass(string userName, string passWord);
+        public bool IsExist(string userName);
     }
 }

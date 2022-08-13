@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Text.Unicode;
 using System.Threading.Tasks;
 
@@ -35,6 +36,7 @@ namespace ScoreManager
             services.AddControllersWithViews().AddJsonOptions(option =>
             {
                 option.JsonSerializerOptions.Encoder= JavaScriptEncoder.Create(UnicodeRanges.All);
+                option.JsonSerializerOptions.PropertyNamingPolicy = null;
             });
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserDal, UserDal>();

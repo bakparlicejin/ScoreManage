@@ -10,13 +10,14 @@ namespace ScoreManager.ServiceInterface
 {
     public interface IBaseSerice<T> where T : class, new()
     {
-        public bool Add(T t);
+        public int Add(T t);
 
         public List<T> Query();
 
         public bool Update(T t);
 
         public bool Delete(T t);
+        public void TransactionOperation(Action<ISqlSugarClient> action);
 
         public List<T> QueryPageData(int pageIndex, int pageSize, out int totalCount, Expression<Func<T, bool>> where, Expression<Func<T, object>> orderby, OrderByType orderByType);
     }

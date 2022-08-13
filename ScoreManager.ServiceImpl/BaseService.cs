@@ -19,7 +19,7 @@ namespace ScoreManager.ServiceImpl
         }
 
 
-        public bool Add(T t)
+        public int Add(T t)
         {
             return _currentDal.Add(t);
         }
@@ -39,6 +39,10 @@ namespace ScoreManager.ServiceImpl
             return _currentDal.Delete(t); ;
         }
 
+        public void TransactionOperation(Action<ISqlSugarClient> action)
+        {
+            _currentDal.TransactionOperation(action);
+        }
         public List<T> QueryPageData(int pageIndex, int pageSize, out int totalCount, Expression<Func<T, bool>> where, Expression<Func<T, object>> orderby, OrderByType orderByType)
         {
             totalCount = 0;

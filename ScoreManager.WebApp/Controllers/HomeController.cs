@@ -26,7 +26,7 @@ namespace ScoreManager.Controllers
         public IActionResult Index()
         {
             var user = HttpContext.User;
-            return View();
+            return View(user);
         }
 
         public IActionResult Privacy()

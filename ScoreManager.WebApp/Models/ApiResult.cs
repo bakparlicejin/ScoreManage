@@ -4,7 +4,7 @@
     /// 通用接口返回格式
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ApiResult<T> where T : class,new()
+    public class ApiResult
     {
         /// <summary>
         /// 返回编码 0：为正常 其他异常
@@ -17,11 +17,11 @@
         /// <summary>
         /// 具体消息内容
         /// </summary>
-        public T Body { get; set; }
+        public object Body { get; set; }
 
-        public static ApiResult<T> OK()
+        public static ApiResult OK() 
         {
-            return new ApiResult<T>()
+            return new ApiResult()
             {
                 Code = 0,
                 Message = string.Empty,
@@ -29,18 +29,18 @@
             };
         }
 
-        public static ApiResult<T> OK(T detail)
+        public static ApiResult OK<T>(T detail)where T:class,new()
         {
-            return new ApiResult<T>()
+            return new ApiResult()
             {
                 Code = 0,
                 Message = string.Empty,
                 Body = detail
             };
         }
-        public static ApiResult<T> Error(string errMsg)
+        public static ApiResult Error(string errMsg)
         {
-            return new ApiResult<T>()
+            return new ApiResult()
             {
                 Code = -1,
                 Message = errMsg,
@@ -48,9 +48,9 @@
             };
         }
 
-        public static ApiResult<T> Error(string errMsg,T detail)
+        public static ApiResult Error<T>(string errMsg,T detail) where T : class, new()
         {
-            return new ApiResult<T>()
+            return new ApiResult()
             {
                 Code = -1,
                 Message = errMsg,
