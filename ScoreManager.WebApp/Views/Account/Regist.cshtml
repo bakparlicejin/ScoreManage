@@ -1,7 +1,7 @@
 ﻿
 <div class="layui-fluid">
     <div class="layui-row">
-        <form class="layui-form">
+        <form method="post" class="layui-form">
             <div class="layui-form-item">
                 <label for="username" class="layui-form-label">
                     <span class="x-red">*</span>登录名
@@ -15,11 +15,11 @@
                 </div>
             </div>
             <div id="divName" style="display:none" class="layui-form-item">
-                <label for="name" class="layui-form-label">
+                <label for="realName" class="layui-form-label">
                     <span class="x-red">*</span>姓名
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="name" name="name" required="" lay-verify="name"
+                    <input type="text" id="realName" name="realName" required="" lay-verify="realname"
                            autocomplete="off" class="layui-input">
                 </div>
 
@@ -76,7 +76,7 @@
             <div class="layui-form-item">
                 <label for="L_repass" class="layui-form-label">
                 </label>
-                <button class="layui-btn" lay-filter="add"  lay-submit="">
+                <button class="layui-btn" lay-filter="add" onclick=" return false;" lay-submit="">
                     注册
                 </button>
             </div>
@@ -98,7 +98,7 @@
                         return '登录名至少得5个字符啊';
                     }
                 },
-                name: function(value) {
+                realname: function(value) {
                     if ($("#divName").css("display") != 'none' && value.length < 2) {
                         return '姓名至少得2个字符啊';
                     }
@@ -110,13 +110,13 @@
                     }
                 },
                 customphone: function(value) {
-                    if (value) {
+                    if ($("#divPhone").css("display") != 'none' && value) {
                         var b = /\d{11}/.test(value);
                         if (!b) return '请输入正确的手机号码';
                     }
                 },
                 customemail: function(value) {
-                    if (value) {
+                    if ($("#divEmail").css("display") != 'none' && value) {
                         var reg = /[a-z0-9._%+-]+@("@")[a-z0-9.-]+\.[a-z]{2,63}$/;
                         var b = reg.test(value);
                         if (!b) return '请输入正确的邮箱';
@@ -126,32 +126,30 @@
             });
 
             //监听提交
-            form.on('submit(add)',
-                function(data) {
-                    //发异步，把数据提交给php
-                    $.post("/Account/Regist", data.field, function(ret) {
-                        if (ret.Code == 0) {
-                            layer.alert("注册成功", {
-                                icon: 6
-                            },
-                                function() {
-                                    //关闭当前frame
-                                    xadmin.close();
+            form.on('submit(add)', function(data) {
+                debugger;
+                //发异步，把数据提交给php
+                $.post("/Account/Regist", data.field, function(ret) {
+                    if (ret.Code == 0) {
+                        layer.alert("注册成功", {
+                            icon: 6
+                        },
+                            function() {
+                                //关闭当前frame
+                                xadmin.close();
 
-                                    // 可以对父窗口进行刷新
-                                    //xadmin.father_reload();
-                                });
-                            //return false;
-                        } else {
-                            layer.alert(ret.Message, { icon: 5 });
-                        }
-
-                    });
+                                // 可以对父窗口进行刷新
+                                //xadmin.father_reload();
+                            });
+                        return false;
+                    } else {
+                        layer.alert(ret.Message, { icon: 5 });
+                    }
 
                 });
+            });
 
             form.on('radio(userTypeRadio)', function(data) {
-                console.log(data);
                 if (data.value == 0) {
                     $("#divName").hide();
                     $("#divPhone").hide();
@@ -167,9 +165,11 @@
                     $("#divPhone").hide();
                     $("#divEmail").hide();
                 }
-            })
+            });
 
         });
+
+    
 
 </script>
 

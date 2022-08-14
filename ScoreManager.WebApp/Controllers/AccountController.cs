@@ -49,6 +49,13 @@ namespace ScoreManager.WebApp.Controllers
             }).Wait();
             return Json(ApiResult.OK());
         }
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync().Wait();
+            return Json(ApiResult.OK());
+        }
+
         /// <summary>
         /// 注册页面
         /// </summary>
@@ -88,7 +95,7 @@ namespace ScoreManager.WebApp.Controllers
                     {
                         EDU_TEACHER teacher = new EDU_TEACHER();
                         teacher.USERID = userId;
-                        teacher.NAME = parameters.Name;
+                        teacher.NAME = parameters.RealName;
                         teacher.PHONE_NUMBER = parameters.Phone;
                         teacher.EMAIL_ADDRESS = parameters.Email;
                         c.Insertable(teacher).ExecuteCommand();
@@ -97,7 +104,7 @@ namespace ScoreManager.WebApp.Controllers
                     {
                         EDU_STUDENT student = new EDU_STUDENT();
                         student.USERID = userId;
-                        student.NAME = parameters.Name;
+                        student.NAME = parameters.RealName;
                         c.Insertable(student).ExecuteCommand();
                     }
                 });

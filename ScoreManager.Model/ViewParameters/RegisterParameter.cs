@@ -15,7 +15,7 @@ namespace ScoreManager.Model.ViewParameters
         /// <summary>
         /// 姓名
         /// </summary>
-        public string Name { get; set; }
+        public string RealName { get; set; }
         /// <summary>
         /// 电话
         /// </summary>

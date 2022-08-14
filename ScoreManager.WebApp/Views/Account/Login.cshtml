@@ -43,7 +43,9 @@
     })
 
     var Login=function(){
+        var index = layer.load(2, {time: 50*1000});
         $.post("/Account/Login", $("#divFormData").serialize(), function(ret) {
+            layer.close(index);
             if (ret.Code == 0) {
                 location.href = "/Home/Index";
                 return;
