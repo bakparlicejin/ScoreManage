@@ -17,6 +17,8 @@ namespace ScoreManager.ServiceInterface
         public bool Update(T t);
 
         public bool Delete(T t);
+        public T QueryById(int id);
+        public bool DeleteById(int id);
         public void TransactionOperation(Action<ISqlSugarClient> action);
 
         public List<T> QueryPageData(int pageIndex, int pageSize, out int totalCount, Expression<Func<T, bool>> where, Expression<Func<T, object>> orderby, OrderByType orderByType);

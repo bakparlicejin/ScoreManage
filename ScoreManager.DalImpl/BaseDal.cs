@@ -36,6 +36,15 @@ namespace ScoreManager.DalImpl
         {
             return _sqlSugarClient.Deleteable<T>(t).ExecuteCommand() > 0;
         }
+        public T QueryById(int id)
+        {
+            return _sqlSugarClient.Queryable<T>().InSingle(id);
+        }
+
+        public bool DeleteById(int id)
+        {
+            return _sqlSugarClient.Deleteable<T>().In(id).ExecuteCommand()>0;
+        }
         public void TransactionOperation(Action<ISqlSugarClient> action) 
         {
             try

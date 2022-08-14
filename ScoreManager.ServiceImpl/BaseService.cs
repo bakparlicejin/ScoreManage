@@ -38,7 +38,14 @@ namespace ScoreManager.ServiceImpl
         {
             return _currentDal.Delete(t); ;
         }
-
+        public bool DeleteById(int id)
+        {
+            return _currentDal.DeleteById(id);
+        }
+        public T QueryById(int id)
+        {
+            return _currentDal.QueryById(id);
+        }
         public void TransactionOperation(Action<ISqlSugarClient> action)
         {
             _currentDal.TransactionOperation(action);

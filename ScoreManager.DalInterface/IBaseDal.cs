@@ -20,7 +20,8 @@ namespace ScoreManager.DalInterface
         public bool Delete(T t) ;
 
         public void TransactionOperation(Action<ISqlSugarClient> action);
-
+        public T QueryById(int id);
+        public bool DeleteById(int id);
         public List<T> QueryByWhere(Expression<Func<T, bool>> where);
         public List<T> QueryPageData(int pageIndex, int pageSize, out int totalCount, Expression<Func<T, bool>> where, Expression<Func<T, object>> orderby, OrderByType orderByType);
     }

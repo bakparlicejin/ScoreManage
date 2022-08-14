@@ -40,6 +40,10 @@ namespace ScoreManager
             });
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserDal, UserDal>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IRoleDal, RoleDal>();
+            services.AddScoped<IActionService, ActionService>();
+            services.AddScoped<IActionDal, ActionDal>();
 
             services.AddScoped<ISqlSugarClient>(option =>
             {
