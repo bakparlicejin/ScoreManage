@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -21,12 +23,7 @@ namespace Models
         [SqlSugar.SugarColumn(IsPrimaryKey = true, OracleSequenceName = "SEQ_ID")]
         public long ID {get;set;}
 
-           /// <summary>
-           /// Desc:描述
-           /// Default:
-           /// Nullable:True
-           /// </summary>           
-           public string DESCRIPTION {get;set;}
+           
 
            /// <summary>
            /// Desc:角色名称
@@ -34,13 +31,21 @@ namespace Models
            /// Nullable:True
            /// </summary>           
            public string NAME {get;set;}
-           /// <summary>
-           /// 添加时间
-           /// </summary>
-           public DateTime ADDTIME { get; set; }
+        /// <summary>
+        /// Desc:描述
+        /// Default:
+        /// Nullable:True
+        /// </summary>           
+        public string DESCRIPTION { get; set; }
+        /// <summary>
+        /// 添加时间
+        /// </summary>
+        public DateTime ADDTIME { get; set; }
             /// <summary>
             /// 是否启用 0：不启用 1：启用 默认启用
             /// </summary>
-            public short ISENABLE { get; set; }
+            public string ISENABLE { get; set; }
+        [Navigate(typeof(EDU_ROLE_ACTION), nameof(EDU_ROLE_ACTION.ROLEID), nameof(EDU_ROLE_ACTION.ACTIONID))]
+        public List<EDU_ACTION> ActionList { get; set; }
     }
 }

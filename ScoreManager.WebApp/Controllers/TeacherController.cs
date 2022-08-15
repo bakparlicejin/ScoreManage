@@ -21,15 +21,15 @@ namespace ScoreManager.WebApp.Controllers
         {
             return View();
         }
+        #region 角色管理
         /// <summary>
-        /// 教师角色管理页面
+        /// 教师角色列表
         /// </summary>
         /// <returns></returns>
-        public IActionResult RoleList(BasePageParameter parameter)
+        public IActionResult RoleList()
         {
-            int totalCount;
-            _roleService.QueryPageData(parameter.PageIndex, parameter.PageSize, out totalCount, c => c.ISENABLE == 1, c => c.ADDTIME, SqlSugar.OrderByType.Desc);
-            return View();
+            var data = _roleService.QueryWithAction(r => r.ActionList, r => true);
+            return View(data);
         }
         /// <summary>
         /// 添加角色
@@ -39,9 +39,12 @@ namespace ScoreManager.WebApp.Controllers
         {
             return View();
         }
+        #endregion
 
+
+        #region 权限管理
         /// <summary>
-        /// 添加权限
+        /// 权限列表
         /// </summary>
         /// <returns></returns>
         public IActionResult ActionList()
@@ -108,6 +111,6 @@ namespace ScoreManager.WebApp.Controllers
             }
             return Json(result);
         }
-        
+        #endregion
     }
 }

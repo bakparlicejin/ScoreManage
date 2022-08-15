@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -42,6 +44,9 @@ namespace Models
         /// 是否启用 0：不启用 1：启用 默认启用
         /// </summary>
         public string ISENABLE { get; set; }
+
+        [Navigate(typeof(EDU_ROLE_ACTION), nameof(EDU_ROLE_ACTION.ACTIONID), nameof(EDU_ROLE_ACTION.ROLEID))]
+        public List<EDU_ROLE> RoleList { get; set; }
 
     }
 }

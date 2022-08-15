@@ -12,6 +12,7 @@ using ScoreManager.ServiceInterface;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Encodings.Web;
@@ -58,6 +59,7 @@ namespace ScoreManager
                 client.Aop.OnLogExecuting = (sql, par) =>
                 {
                     Console.WriteLine($"Sql”Ôæ‰{sql}");
+                    Debug.WriteLine($"Sql”Ôæ‰{sql}");
                 };
 
                 return client;

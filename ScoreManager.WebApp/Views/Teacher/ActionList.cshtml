@@ -1,7 +1,7 @@
 ﻿@using Models
 @model List<EDU_ACTION>
 @{
-    ViewData["Title"] = "权限列表";
+    ViewData["Title"] = "角色列表";
 
 }
 
@@ -11,7 +11,7 @@
             <div class="layui-card">
 
                 <div class="layui-card-header">
-                    <button class="layui-btn" onclick="xadmin.open('添加权限','/Teacher/AddAction',600,400)"><i class="layui-icon"></i>添加</button>
+                    <button class="layui-btn" onclick="xadmin.open('添加权限','/Teacher/AddRole',600,400)"><i class="layui-icon"></i>添加权限</button>
                 </div>
                 <div class="layui-card-body layui-table-body layui-table-main">
                     <table class="layui-table layui-form">
@@ -77,14 +77,14 @@
 <script>
 
 
-    /*用户-停用-启用*/
+    /*权限-停用-启用*/
     function member_stoporstart(obj, id) {
         var title = $(obj).attr('title');
         var confirmMsg = '确认要' + title + '吗？'
         var status = title == "停用" ? "0" : "1";
         layer.confirm(confirmMsg, function(index) {
             //发异步把用户状态进行更改
-            $.post("/Teacher/EnableOrDisAbledAction", { "id": id ,"status":status}, function(ret) {
+            $.post("/Teacher/EnableOrDisAbledRole", { "id": id ,"status":status}, function(ret) {
                 if (ret.Code == 0) {
                     if (status == "0") {
                         $(obj).attr('title', '启用')
@@ -109,10 +109,10 @@
         });
     }
 
-    /*用户-删除*/
+    /*权限-删除*/
     function member_del(obj, id) {
         layer.confirm('确认要删除吗？', function(index) {
-            $.post("/Teacher/DelAction", { "id": id }, function(ret) {
+            $.post("/Teacher/DelRole", { "id": id }, function(ret) {
                 if (ret.Code == 0) {
                     $(obj).parents("tr").remove();
                     layer.msg('已删除!', { icon: 1, time: 1000 });
