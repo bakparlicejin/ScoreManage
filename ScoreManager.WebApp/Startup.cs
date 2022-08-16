@@ -60,6 +60,7 @@ namespace ScoreManager
                 {
                     Console.WriteLine($"Sql”Ôæ‰{sql}");
                     Debug.WriteLine($"Sql”Ôæ‰{sql}");
+                    UtilMethods.GetSqlString(DbType.Oracle, sql, par);
                 };
 
                 return client;

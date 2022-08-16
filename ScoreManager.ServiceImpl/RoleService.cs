@@ -1,5 +1,6 @@
 ﻿using Models;
 using ScoreManager.DalInterface;
+using ScoreManager.Model.ViewParameters;
 using ScoreManager.ServiceInterface;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,40 @@ namespace ScoreManager.ServiceImpl
         public List<EDU_ROLE> QueryWithAction(Expression<Func<EDU_ROLE, List<EDU_ACTION>>> actionInclude, Expression<Func<EDU_ROLE, bool>> filter)
         {
             return _roleDal.QueryWithAction(actionInclude, filter);
+        }
+
+        /// <summary>
+        /// 级联增加
+        /// </summary>
+        /// <param name="roleWithActions"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public bool AddWithActions(EDU_ROLE roleWithActions, out string msg)
+        {
+            msg = "";
+            return _roleDal.AddWithActions(roleWithActions, out  msg);
+
+        }
+
+        /// <summary>
+        /// 删除角色和中间表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteRoleWithRelation(int id)
+        {
+            return _roleDal.DeleteRoleWithRelation(id);
+        }
+
+        /// <summary>
+        /// 更新角色和中间表
+        /// </summary>
+        /// <param name="roleWithActions"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public bool UpdateWithActions(EDU_ROLE roleWithActions, out string msg)
+        {
+            return _roleDal.UpdateWithActions(roleWithActions,out msg);
         }
     }
 }

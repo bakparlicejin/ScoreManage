@@ -11,7 +11,7 @@
             <div class="layui-card">
 
                 <div class="layui-card-header">
-                    <button class="layui-btn" onclick="xadmin.open('添加权限','/Teacher/AddRole',600,400)"><i class="layui-icon"></i>添加权限</button>
+                    <button class="layui-btn" onclick="xadmin.open('添加权限','/Teacher/AddAction',600,400)"><i class="layui-icon"></i>添加权限</button>
                 </div>
                 <div class="layui-card-body layui-table-body layui-table-main">
                     <table class="layui-table layui-form">
@@ -84,7 +84,8 @@
         var status = title == "停用" ? "0" : "1";
         layer.confirm(confirmMsg, function(index) {
             //发异步把用户状态进行更改
-            $.post("/Teacher/EnableOrDisAbledRole", { "id": id ,"status":status}, function(ret) {
+            $.post("/Teacher/EnableOrDisAbledAction", { "id": id ,"status":status}, function(ret) {
+                debugger;
                 if (ret.Code == 0) {
                     if (status == "0") {
                         $(obj).attr('title', '启用')

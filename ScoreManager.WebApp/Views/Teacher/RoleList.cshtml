@@ -11,7 +11,7 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-header">
-                    <button class="layui-btn" onclick="xadmin.open('添加角色','/Teacher/AddRole',600,400)"><i class="layui-icon"></i>添加角色</button>
+                    <button class="layui-btn" onclick="xadmin.open('添加角色','/Teacher/AddRole',500,400)"><i class="layui-icon"></i>添加角色</button>
                 </div>
                 <div class="layui-card-body ">
                     <table class="layui-table layui-form">
@@ -64,7 +64,7 @@
                                                 <i class="layui-icon">&#xe62f;</i>
                                             </a>
                                         }
-                                        <a title="编辑" onclick="xadmin.open('编辑','admin-edit.html')" href="javascript:;">
+                                        <a title="编辑" onclick="xadmin.open('编辑','/Teacher/EditRole?id='+@item.ID,500,400)" href="javascript:;">
                                             <i class="layui-icon">&#xe642;</i>
                                         </a>
                                         <a title="删除" onclick="member_del(this,@item.ID)" href="javascript:;">
@@ -87,12 +87,13 @@
 
  /*角色-停用-启用*/
     function member_stoporstart(obj, id) {
+        debugger;
         var title = $(obj).attr('title');
         var confirmMsg = '确认要' + title + '吗？'
         var status = title == "停用" ? "0" : "1";
         layer.confirm(confirmMsg, function(index) {
             //发异步把用户状态进行更改
-            $.post("/Teacher/EnableOrDisAbledAction", { "id": id ,"status":status}, function(ret) {
+            $.post("/Teacher/EnableOrDisAbledRole", { "id": id ,"status":status}, function(ret) {
                 if (ret.Code == 0) {
                     if (status == "0") {
                         $(obj).attr('title', '启用')
@@ -120,7 +121,7 @@
     /*角色-删除*/
     function member_del(obj, id) {
         layer.confirm('确认要删除吗？', function(index) {
-            $.post("/Teacher/DelAction", { "id": id }, function(ret) {
+            $.post("/Teacher/DelRole", { "id": id }, function(ret) {
                 if (ret.Code == 0) {
                     $(obj).parents("tr").remove();
                     layer.msg('已删除!', { icon: 1, time: 1000 });

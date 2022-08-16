@@ -25,5 +25,60 @@ namespace ScoreManager.DalImpl
         {
             return _sqlSugarClient.Queryable<EDU_ROLE>().Includes(actionInclude).Where(filter).ToList();
         }
+
+        /// <summary>
+        /// 级联增加
+        /// </summary>
+        /// <param name="roleWithActions"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public bool AddWithActions(EDU_ROLE roleWithActions, out string msg)
+        {
+            try
+            {
+                _sqlSugarClient.InsertNav(roleWithActions).Include(c => c.ActionList).ExecuteCommand();
+                msg = "";
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+
+                msg = "增加角色失败";
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 删除角色和中间表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteRoleWithRelation(int id)
+        {
+           return _sqlSugarClient.DeleteNav<EDU_ROLE>(c=>c.ID==id).Include(c => c.ActionList,new DeleteNavOptions() { ManyToManyIsDeleteA=true}).ExecuteCommand();
+        }
+
+        /// <summary>
+        /// 更新角色和中间表
+        /// </summary>
+        /// <param name="roleWithActions"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public bool UpdateWithActions(EDU_ROLE roleWithActions, out string msg)
+        {
+            try
+            {
+
+                _sqlSugarClient.UpdateNav<EDU_ROLE>(roleWithActions).Include(c => c.ActionList, new UpdateNavOptions() { ManyToManyIsUpdateA = true }).ExecuteCommand();
+                msg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                msg = "修改角色失败";
+                return false;
+            }
+        }
     }
 }
