@@ -2,6 +2,7 @@
 using ScoreManager.DalInterface;
 using ScoreManager.Model.ViewParameters;
 using ScoreManager.ServiceInterface;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,10 @@ namespace ScoreManager.ServiceImpl
 {
     public class RoleService : BaseService<EDU_ROLE>, IRoleService
     {
-        private IRoleDal _roleDal;
-        public RoleService(IRoleDal roleDal) : base(roleDal)
+
+        public RoleService(ISqlSugarClient sqlSugarClient) : base(sqlSugarClient)
         {
-            _roleDal = roleDal;
+
         }
         /// <summary>
         /// 级联查询
@@ -26,7 +27,7 @@ namespace ScoreManager.ServiceImpl
         /// <returns></returns>
         public List<EDU_ROLE> QueryWithAction(Expression<Func<EDU_ROLE, List<EDU_ACTION>>> actionInclude, Expression<Func<EDU_ROLE, bool>> filter)
         {
-            return _roleDal.QueryWithAction(actionInclude, filter);
+            return _sqlSugarClient.Queryable<EDU_ROLE>().Includes(actionInclude).Where(filter).ToList();
         }
 
         /// <summary>
@@ -37,9 +38,19 @@ namespace ScoreManager.ServiceImpl
         /// <returns></returns>
         public bool AddWithActions(EDU_ROLE roleWithActions, out string msg)
         {
-            msg = "";
-            return _roleDal.AddWithActions(roleWithActions, out  msg);
+            try
+            {
+                _sqlSugarClient.InsertNav(roleWithActions).Include(c => c.ActionList).ExecuteCommand();
+                msg = "";
+                return true;
 
+            }
+            catch (Exception ex)
+            {
+
+                msg = "增加角色失败";
+                return false;
+            }
         }
 
         /// <summary>
@@ -49,7 +60,7 @@ namespace ScoreManager.ServiceImpl
         /// <returns></returns>
         public bool DeleteRoleWithRelation(int id)
         {
-            return _roleDal.DeleteRoleWithRelation(id);
+            return _sqlSugarClient.DeleteNav<EDU_ROLE>(c => c.ID == id).Include(c => c.ActionList, new DeleteNavOptions() { ManyToManyIsDeleteA = true }).ExecuteCommand();
         }
 
         /// <summary>
@@ -60,7 +71,18 @@ namespace ScoreManager.ServiceImpl
         /// <returns></returns>
         public bool UpdateWithActions(EDU_ROLE roleWithActions, out string msg)
         {
-            return _roleDal.UpdateWithActions(roleWithActions,out msg);
+            try
+            {
+
+                _sqlSugarClient.UpdateNav<EDU_ROLE>(roleWithActions).Include(c => c.ActionList, new UpdateNavOptions() { ManyToManyIsUpdateA = true }).ExecuteCommand();
+                msg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                msg = "修改角色失败";
+                return false;
+            }
         }
     }
 }

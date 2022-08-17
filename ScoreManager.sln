@@ -11,15 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScoreManager.Model", "Score
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScoreManager.Common", "ScoreManager.Common\ScoreManager.Common.csproj", "{887339E3-2048-43E7-894D-2BD6316106E6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScoreManager.DalInterface", "ScoreManager.DalInterface\ScoreManager.DalInterface.csproj", "{9B8A5F9E-7A59-4123-BCE7-6FB9EC0E9EFD}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScoreManager.DalImpl", "ScoreManager.DalImpl\ScoreManager.DalImpl.csproj", "{AD870845-1B13-4788-BEC6-E545CF18A29C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScoreManager.WebApp", "ScoreManager.WebApp\ScoreManager.WebApp.csproj", "{6D837C03-0C64-45F5-87BD-2F11B672B918}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBFirstConsole", "DBFirstConsole\DBFirstConsole.csproj", "{E00DAA6B-243A-4AA4-BBCB-8EAE8190F7B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeFirstConsole", "CodeFirstConsole\CodeFirstConsole.csproj", "{1D954899-7614-4BAE-AB88-B84B44B849C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeFirstConsole", "CodeFirstConsole\CodeFirstConsole.csproj", "{1D954899-7614-4BAE-AB88-B84B44B849C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,14 +39,6 @@ Global
 		{887339E3-2048-43E7-894D-2BD6316106E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{887339E3-2048-43E7-894D-2BD6316106E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{887339E3-2048-43E7-894D-2BD6316106E6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9B8A5F9E-7A59-4123-BCE7-6FB9EC0E9EFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B8A5F9E-7A59-4123-BCE7-6FB9EC0E9EFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B8A5F9E-7A59-4123-BCE7-6FB9EC0E9EFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B8A5F9E-7A59-4123-BCE7-6FB9EC0E9EFD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD870845-1B13-4788-BEC6-E545CF18A29C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD870845-1B13-4788-BEC6-E545CF18A29C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD870845-1B13-4788-BEC6-E545CF18A29C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD870845-1B13-4788-BEC6-E545CF18A29C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6D837C03-0C64-45F5-87BD-2F11B672B918}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6D837C03-0C64-45F5-87BD-2F11B672B918}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D837C03-0C64-45F5-87BD-2F11B672B918}.Release|Any CPU.ActiveCfg = Release|Any CPU

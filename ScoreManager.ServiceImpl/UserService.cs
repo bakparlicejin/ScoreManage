@@ -1,6 +1,7 @@
 ﻿using Models;
 using ScoreManager.DalInterface;
 using ScoreManager.ServiceInterface;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,20 +12,19 @@ namespace ScoreManager.ServiceImpl
 {
     public class UserService : BaseService<EDU_USER>, IUserService
     {
-        private IUserDal _userDal;
-        public UserService(IUserDal userDal) : base(userDal)
+        public UserService(ISqlSugarClient sqlSugarClient) : base(sqlSugarClient)
         {
-            _userDal = userDal;
+
         }
 
         public EDU_USER GetUserByNameAndPass(string userName, string passWord)
         {
-           return _userDal.GetUserByNameAndPass(userName, passWord);
+            return _sqlSugarClient.Queryable<EDU_USER>().Single(c => c.USERNAME == userName && c.PASSWORD == passWord);
         }
 
         public bool IsExist(string userName)
         {
-            return _userDal.QueryByWhere(c => c.USERNAME == userName).Any();
+            return this.QueryByWhere(c => c.USERNAME == userName).Any();
         }
     }
 }

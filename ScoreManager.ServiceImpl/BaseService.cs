@@ -11,49 +11,64 @@ namespace ScoreManager.ServiceImpl
 {
     public class BaseService<T> where T : class, new()
     {
-        public IBaseDal<T> _currentDal;
-
-        public BaseService(IBaseDal<T> baseDal)
+        protected ISqlSugarClient _sqlSugarClient { get; set; }
+        public BaseService(ISqlSugarClient sqlSugarClient)
         {
-            _currentDal= baseDal;
+            _sqlSugarClient = sqlSugarClient;
         }
-
-
         public int Add(T t)
         {
-            return _currentDal.Add(t);
+
+            return _sqlSugarClient.Insertable<T>(t).ExecuteReturnIdentity(); ;
         }
 
         public List<T> Query()
         {
-            return _currentDal.Query();
+            return _sqlSugarClient.Queryable<T>().ToList();
         }
 
         public bool Update(T t)
         {
-            return _currentDal.Update(t);
+            return _sqlSugarClient.Updateable<T>(t).ExecuteCommand() > 0;
         }
 
         public bool Delete(T t)
         {
-            return _currentDal.Delete(t); ;
-        }
-        public bool DeleteById(int id)
-        {
-            return _currentDal.DeleteById(id);
+            return _sqlSugarClient.Deleteable<T>(t).ExecuteCommand() > 0;
         }
         public T QueryById(int id)
         {
-            return _currentDal.QueryById(id);
+            return _sqlSugarClient.Queryable<T>().InSingle(id);
+        }
+
+        public bool DeleteById(int id)
+        {
+            return _sqlSugarClient.Deleteable<T>().In(id).ExecuteCommand() > 0;
         }
         public void TransactionOperation(Action<ISqlSugarClient> action)
         {
-            _currentDal.TransactionOperation(action);
+            try
+            {
+
+                _sqlSugarClient.Ado.BeginTran();
+                action(this._sqlSugarClient);
+                _sqlSugarClient.Ado.CommitTran();
+            }
+            catch (Exception ex)
+            {
+                _sqlSugarClient.Ado.RollbackTran();
+                throw ex;
+            }
+        }
+
+        public List<T> QueryByWhere(Expression<Func<T, bool>> where)
+        {
+            return _sqlSugarClient.Queryable<T>().Where(where).ToList();
         }
         public List<T> QueryPageData(int pageIndex, int pageSize, out int totalCount, Expression<Func<T, bool>> where, Expression<Func<T, object>> orderby, OrderByType orderByType)
         {
             totalCount = 0;
-            return _currentDal.QueryPageData(pageIndex, pageSize, out totalCount, where, orderby, orderByType);
+            return _sqlSugarClient.Queryable<T>().Where(where).OrderBy(orderby, orderByType).ToPageList(pageIndex, pageSize, ref totalCount);
 
         }
     }

@@ -2,6 +2,7 @@
 using ScoreManager.DalInterface;
 using ScoreManager.Model.ViewParameters;
 using ScoreManager.ServiceInterface;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,17 +14,16 @@ namespace ScoreManager.ServiceImpl
 {
     public class ActionService : BaseService<EDU_ACTION>, IActionService
     {
-        private IActionDal _actionDal;
-        public ActionService(IActionDal actionDal) : base(actionDal)
+        public ActionService(ISqlSugarClient sqlSugarClient) : base(sqlSugarClient)
         {
-            _actionDal = actionDal;
-        }
+
+        }  
 
         public bool AddAction(AddActionParameter addActionParameter, out string msg)
         {
             bool addSuccess = false;
             msg = "";
-            _actionDal.TransactionOperation(c =>
+            this.TransactionOperation(c =>
             {
                 int existCount= c.Queryable<EDU_ACTION>().Count(c => c.NAME == addActionParameter.ActionName);
                 if (existCount > 0) return;
@@ -52,7 +52,7 @@ namespace ScoreManager.ServiceImpl
         /// <returns></returns>
         public List<EDU_ACTION> QueryWithRole(Expression<Func<EDU_ACTION, List<EDU_ROLE>>> roleInclude, Expression<Func<EDU_ACTION, bool>> filter)
         {
-            return _actionDal.QueryWithRole(roleInclude, filter);
+            return _sqlSugarClient.Queryable<EDU_ACTION>().Includes(roleInclude).Where(filter).ToList();
         }
     }
 }
