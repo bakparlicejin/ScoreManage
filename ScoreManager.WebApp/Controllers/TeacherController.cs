@@ -57,11 +57,15 @@ namespace ScoreManager.WebApp.Controllers
             roleWithActions.DESCRIPTION = addRoleParameter.RoleDescription;
             roleWithActions.ISENABLE = addRoleParameter.IsEnable;
             roleWithActions.ActionList = new List<EDU_ACTION>();
-            foreach (var item in addRoleParameter.SelectActions)
+            if (addRoleParameter.SelectActions!=null)
             {
-                EDU_ACTION temAction = new EDU_ACTION() { ID = item };
-                roleWithActions.ActionList.Add(temAction);
+                foreach (var item in addRoleParameter.SelectActions)
+                {
+                    EDU_ACTION temAction = new EDU_ACTION() { ID = item };
+                    roleWithActions.ActionList.Add(temAction);
+                }
             }
+            
             
             bool isSuccess = _roleService.AddWithActions(roleWithActions, out msg);
             if (isSuccess)
@@ -136,12 +140,17 @@ namespace ScoreManager.WebApp.Controllers
             string msg;
             EDU_ROLE roleWithActions= _roleService.QueryWithAction(r => r.ActionList, r => r.ID == RoleId).First();
             roleWithActions.DESCRIPTION = addRoleParameter.RoleDescription;
-            roleWithActions.ActionList = new List<EDU_ACTION>();
-            foreach (var item in addRoleParameter.SelectActions)
+            roleWithActions.ActionList?.Clear();
+            if (addRoleParameter.SelectActions!=null)
             {
-                EDU_ACTION temAction = new EDU_ACTION() { ID = item };
-                roleWithActions.ActionList.Add(temAction);
+                roleWithActions.ActionList = new List<EDU_ACTION>();
+                foreach (var item in addRoleParameter.SelectActions)
+                {
+                    EDU_ACTION temAction = new EDU_ACTION() { ID = item };
+                    roleWithActions.ActionList.Add(temAction);
+                }
             }
+            
 
             bool isSuccess = _roleService.UpdateWithActions(roleWithActions, out msg);
             if (isSuccess)

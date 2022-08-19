@@ -73,8 +73,23 @@ namespace ScoreManager.ServiceImpl
         {
             try
             {
+                this.TransactionOperation(client =>
+                {
+                    client.Updateable<EDU_ROLE>(roleWithActions).ExecuteCommand();
+                    client.Deleteable<EDU_ROLE_ACTION>(c=>c.ROLEID==roleWithActions.ID).ExecuteCommand();
+                    if (roleWithActions.ActionList!=null&&roleWithActions.ActionList.Any())
+                    {
+                        List<EDU_ROLE_ACTION> role_actions=new List<EDU_ROLE_ACTION>();
+                        foreach (var item in roleWithActions.ActionList)
+                        {
+                            EDU_ROLE_ACTION eDU_ROLE_ACTION = new EDU_ROLE_ACTION() { ACTIONID = item.ID, ROLEID = roleWithActions.ID };
+                            role_actions.Add(eDU_ROLE_ACTION);
+                        }
+                        client.Insertable<EDU_ROLE_ACTION>(role_actions).ExecuteCommand();
+                    }
 
-                _sqlSugarClient.UpdateNav<EDU_ROLE>(roleWithActions).Include(c => c.ActionList, new UpdateNavOptions() { ManyToManyIsUpdateA = true }).ExecuteCommand();
+                });
+                //_sqlSugarClient.UpdateNav<EDU_ROLE>(roleWithActions).Include(c => c.ActionList, new UpdateNavOptions() { ManyToManyIsUpdateA = true }).ExecuteCommand();
                 msg = "";
                 return true;
             }
