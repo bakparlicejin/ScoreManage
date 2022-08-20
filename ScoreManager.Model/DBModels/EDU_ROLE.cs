@@ -47,5 +47,9 @@ namespace Models
             public string ISENABLE { get; set; }
         [Navigate(typeof(EDU_ROLE_ACTION), nameof(EDU_ROLE_ACTION.ROLEID), nameof(EDU_ROLE_ACTION.ACTIONID))]
         public List<EDU_ACTION> ActionList { get; set; }
+
+
+        [Navigate(typeof(EDU_TEACHER_ROLE), nameof(EDU_TEACHER_ROLE.ROLEID), nameof(EDU_TEACHER_ROLE.TEACHERID))]//注意顺序
+        public List<EDU_TEACHER> Teachers { get; set; }//只能是null不能赋默认值
     }
 }

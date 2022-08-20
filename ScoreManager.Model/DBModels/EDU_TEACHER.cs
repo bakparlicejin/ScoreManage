@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -55,6 +57,12 @@ namespace Models
            /// Nullable:False
            /// </summary>           
            public long SUBJECTID {get;set;}
+
+        [Navigate(NavigateType.OneToOne, nameof(USERID))]//一对一 
+        public EDU_USER User { get; set; }
+
+        [Navigate(typeof(EDU_TEACHER_ROLE), nameof(EDU_TEACHER_ROLE.TEACHERID), nameof(EDU_TEACHER_ROLE.ROLEID))]//注意顺序
+        public List<EDU_ROLE> Roles { get; set; }//只能是null不能赋默认值
 
     }
 }

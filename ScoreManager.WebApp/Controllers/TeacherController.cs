@@ -14,14 +14,12 @@ namespace ScoreManager.WebApp.Controllers
     {
         private readonly IRoleService _roleService;
         private readonly IActionService _actionService;
-        public TeacherController(IRoleService roleService, IActionService actionService)
+        private readonly ITeacherService _teacherService;
+        public TeacherController(IRoleService roleService, IActionService actionService, ITeacherService teacherService)
         {
             _roleService = roleService;
             _actionService = actionService;
-        }
-        public IActionResult Index()
-        {
-            return View();
+            _teacherService = teacherService;
         }
         #region 角色管理
         /// <summary>
@@ -237,6 +235,52 @@ namespace ScoreManager.WebApp.Controllers
                 result.Message = "删除失败";
             }
             return Json(result);
+        }
+        #endregion
+
+        #region 教师管理
+        /// <summary>
+        /// 教师列表
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult TeacherList()
+        {
+
+            return View();
+        }
+        /// <summary>
+        /// 查询分页信息
+        /// </summary>
+        /// <param name="KeyWords">关键词</param>
+        /// <returns></returns>
+        public IActionResult TeacherListPageInfo(TeacherListParameter parameter)
+        {
+           int totalCount=  _teacherService.CountByKeyWords(parameter);
+            return Json(new { TotalCount = totalCount, PageSize = parameter.PageSize });
+        }
+        /// <summary>
+        /// 查询列表详情
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult TeacherListDetail(TeacherListParameter parameter)
+        {
+            //查询教师列表数据
+            int totalCount = 0;
+            var list = _teacherService.GetTeacherListWithUserAndRole(parameter, ref totalCount);
+            ViewData["TotalCount"] = totalCount;
+            ViewData["PageSize"] = parameter.PageSize;
+            ViewData["PageIndex"] = parameter.PageIndex;
+            return PartialView("TeacherListDetail",list);
+        }
+        /// <summary>
+        /// 添加老师
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult AddTeacher()
+        {
+            return View();
         }
         #endregion
     }

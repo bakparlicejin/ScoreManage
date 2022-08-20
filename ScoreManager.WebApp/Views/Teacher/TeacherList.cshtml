@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "教师列表";
+
+    int totalCount = Convert.ToInt32(ViewData["TotalCount"]);
+    int pageSize = Convert.ToInt32(ViewData["PageSize"]);
+    int pageIndex = Convert.ToInt32(ViewData["PageIndex"]);
+
+}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form layui-col-space5">
+
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" id="KeyWords" name="KeyWords" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <button class="layui-btn" lay-submit="" onclick="    QueryPageInfo(); return false;" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-card-header">
+                    <button class="layui-btn" onclick="xadmin.open('添加教师','/Teacher/AddTeacher',500,470)"><i class="layui-icon"></i>添加</button>
+                </div>
+                <div id="resultList"></div>
+
+                <div class="layui-card-body ">
+                    <div id="pageBar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(function() {
+        QueryPageInfo();
+    })
+    var QueryPageInfo = function() {
+        $.get("/Teacher/TeacherListPageInfo", { "KeyWords": $("#KeyWords").val() }, function(ret){
+            layui.use(['laypage', 'form'], function() {
+                var laypage = layui.laypage;
+                var layer = layui.layer;
+                var form = layui.form;
+
+                //总页数大于页码总数
+                laypage.render({
+                    elem: 'pageBar'
+                    , count: ret.TotalCount //数据总数
+                    , limit: ret.PageSize
+                    , jump: function(obj) {
+                        QueryPageList(obj.curr, ret.PageSize);
+                    }
+                });
+            });
+        })
+    }
+    var QueryPageList = function(pageIndex, pageSize) {
+        $.post("/Teacher/TeacherListDetail", { "PageSize": pageSize, "PageIndex": pageIndex, "KeyWords": $("#KeyWords").val() }, function(ret) {
+            $("#resultList").html(ret);
+        });
+
+    }
+    /*用户-停用*/
+    function member_stop(obj, id) {
+        layer.confirm('确认要停用吗？', function(index) {
+
+            if ($(obj).attr('title') == '启用') {
+
+                //发异步把用户状态进行更改
+                $(obj).attr('title', '停用')
+                $(obj).find('i').html('&#xe62f;');
+
+                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                layer.msg('已停用!', { icon: 5, time: 1000 });
+
+            } else {
+                $(obj).attr('title', '启用')
+                $(obj).find('i').html('&#xe601;');
+
+                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+                layer.msg('已启用!', { icon: 5, time: 1000 });
+            }
+
+        });
+    }
+
+    /*用户-删除*/
+    function member_del(obj, id) {
+        layer.confirm('确认要删除吗？', function(index) {
+            //发异步删除数据
+            $(obj).parents("tr").remove();
+            layer.msg('已删除!', { icon: 1, time: 1000 });
+        });
+    }
+
+
+
+</script>
+

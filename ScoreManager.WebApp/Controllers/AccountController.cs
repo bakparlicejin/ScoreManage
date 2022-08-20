@@ -119,18 +119,5 @@ namespace ScoreManager.WebApp.Controllers
 
             return Json(apiResult);
         }
-        public IActionResult AddUser()
-        {
-            EDU_USER user = new EDU_USER()
-            {
-                USERNAME = "admin",
-                PASSWORD = "admin123",
-                TYPE = 0
-            };
-            int i = _sqlSugarClient.Insertable(user).ExecuteCommand();
-
-            user = _sqlSugarClient.Queryable<EDU_USER>().First();
-            return View(user);
-        }
     }
 }

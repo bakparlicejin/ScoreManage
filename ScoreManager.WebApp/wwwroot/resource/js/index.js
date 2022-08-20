@@ -314,6 +314,20 @@ layui.use(['layer','element','jquery'],function() {
         return false;
     });
 
+    $(".layui-tab-title").on('click', 'li', function (event) {
+       
+        var this_index = $(this).attr('lay-id');
+        $('.left-nav').find('a').removeClass('active');
+        for (var i = 0; i < $('.left-nav').find('a').length; i++) {
+            var el = $($('.left-nav').find('a')[i]);
+            var temUrl = el.data("url");
+            if (md5(temUrl) == this_index) {
+                el.addClass("active");
+                return;
+            } 
+        }
+    });
+
     $('#tab_right').on('click', 'dd', function(event) {
         var data_type = $(this).attr('data-type');
         var lay_id = $(this).parents('#tab_right').attr('lay-id');

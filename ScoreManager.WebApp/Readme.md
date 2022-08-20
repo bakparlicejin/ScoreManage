@@ -3,8 +3,7 @@
   顶层 应用UI层  ScoreManager.WebApp
   服务层接口  ScoreManager.ServiceInterface
   服务层实现  ScoreManager.ServiceImpl
-  数据层接口  ScoreManager.DalInterface
-  数据层实现  ScoreManager.DalImpl
+  
 
 以上是三层结构，从上到下调用，按照规范层与层之间不可逆向调用，同一实现层之间可相互调用
 

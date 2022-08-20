@@ -42,7 +42,7 @@ namespace ScoreManager
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IActionService, ActionService>();
-
+            services.AddScoped<ITeacherService, TeacherService>();
             services.AddScoped<ISqlSugarClient>(option =>
             {
                 SqlSugarClient client = new SqlSugarClient(new ConnectionConfig()

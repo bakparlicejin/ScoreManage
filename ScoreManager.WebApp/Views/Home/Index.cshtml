@@ -45,16 +45,7 @@
 <div class="left-nav">
     <div id="side-nav">
         <ul id="nav">
-            <li>
-                <a href="javascript:;" onclick="xadmin.add_tab('我的桌面','welcome.html')">
-                    <i class="layui-icon left-nav-li" lay-tips="首页">&#xe68e;</i>
-                    <cite>首页</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
-
-            </li>
-
-            
+           
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <i class="iconfont left-nav-li" lay-tips="字典管理">&#xe6a2;</i>
@@ -63,23 +54,46 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('教师角色列表','/Teacher/RoleList')">
-                            <i class="iconfont">&#xe6a7;</i>
+                        <a data-url="/Teacher/RoleList" onclick="xadmin.add_tab('教师角色列表','/Teacher/RoleList')">
+                           
                             <cite>教师角色</cite>
                         </a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('教师权限列表','/Teacher/ActionList')">
-                            <i class="iconfont">&#xe6a7;</i>
+                        <a data-url="/Teacher/ActionList" onclick="xadmin.add_tab('教师权限列表','/Teacher/ActionList')">
+                            
                             <cite>教师权限</cite>
                         </a>
                     </li>
                       <li>
-                        <a onclick="xadmin.add_tab('教师权限列表','article-list.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>学科</cite>
+                        <a data-url="" onclick="xadmin.add_tab('学科管理','article-list.html')">
+                           
+                            <cite>学科管理</cite>
                         </a>
                     </li>
+
+                </ul>
+
+
+            </li>
+             <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="人员管理">&#xe6b8;</i>
+                    <cite>人员管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('教师管理','/Teacher/TeacherList')">
+                            <cite>教师管理</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('学生管理','article-list.html')">
+                            <cite>学生管理</cite>
+                        </a>
+                    </li>
+                      
 
                 </ul>
 
@@ -94,13 +108,13 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('教师角色列表','articletype-list.html')">
+                        <a onclick="xadmin.add_tab('学生考试','articletype-list.html')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>学生考试</cite>
                         </a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('教师权限列表','article-list.html')">
+                        <a onclick="xadmin.add_tab('考试详情','article-list.html')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>考试详情</cite>
                         </a>
@@ -152,33 +166,7 @@
            
           
 
-            <li>
-                <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="其它页面">&#xe6b4;</i>
-                    <cite>其它页面</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a href="login.html" target="_blank">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>登录页面</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a onclick="xadmin.add_tab('错误页面','error.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>错误页面</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a onclick="xadmin.add_tab('更新日志','log.html')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>更新日志</cite>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+          
 
 
            
@@ -204,7 +192,7 @@
         </div>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
-                <iframe src='./welcome.html' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+                @*<iframe src='/Teacher/ActionList' frameborder="0" scrolling="yes" class="x-iframe"></iframe>*@
             </div>
         </div>
         <div id="tab_show"></div>
