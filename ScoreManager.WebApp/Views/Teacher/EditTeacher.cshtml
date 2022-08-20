@@ -1,8 +1,8 @@
 ﻿@using Models
+@model EDU_TEACHER
 @{
-     List<EDU_SUBJECT> subjects = ViewBag.Subjects as List<EDU_SUBJECT>;
-     List<EDU_ROLE> roles = ViewBag.Roles as List<EDU_ROLE>;
-
+    List<EDU_ROLE> roles = ViewBag.Roles as List<EDU_ROLE>;
+    List<long> currentRoleIds = Model.Roles.Select(c => c.ID)?.ToList();
 }
 <div class="layui-fluid">
     <div class="layui-row">
@@ -13,55 +13,50 @@
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="username" name="username" required="" lay-verify="username"
-                           autocomplete="off" class="layui-input">
+                           autocomplete="off" class="layui-input" value="@Model.User.USERNAME" disabled>
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     <span class="x-red">*</span>将会成为您唯一的登入名
                 </div>
             </div>
-            <div id="divName"  class="layui-form-item">
+
+            <div id="divName" class="layui-form-item">
                 <label for="realName" class="layui-form-label">
                     <span class="x-red">*</span>姓名
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="realName" name="realName" required="" lay-verify="realname"
-                           autocomplete="off" class="layui-input">
+                    <input type="text" id="realName"  name="realName" required="" lay-verify="realname"
+                           autocomplete="off" class="layui-input" value="@Model.NAME">
                 </div>
 
             </div>
-            <div id="divPhone"  class="layui-form-item">
+            <div id="divPhone" class="layui-form-item">
                 <label for="phone" class="layui-form-label">
                     手机
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="phone" name="phone" lay-verify="customphone"
-                           autocomplete="off" class="layui-input">
+                           autocomplete="off" class="layui-input" value="@Model.PHONE_NUMBER">
                 </div>
 
             </div>
-            <div id="divEmail"  class="layui-form-item">
+            <div id="divEmail" class="layui-form-item">
                 <label for="email" class="layui-form-label">
                     邮箱
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="email" name="email" lay-verify="customemail"
-                           autocomplete="off" class="layui-input">
+                           autocomplete="off" class="layui-input" value="@Model.EMAIL_ADDRESS">
                 </div>
 
             </div>
-
-            <div id="divSubject"  class="layui-form-item">
+            <div id="divSubject" class="layui-form-item">
                 <label for="subject" class="layui-form-label">
-                     <span class="x-red">*</span>学科
+                    <span class="x-red">*</span>学科
                 </label>
                 <div class="layui-input-inline">
-                    <select name="subject" lay-verify="required" lay-search="">
-                          <option value="">直接选择或搜索选择</option>
-                          @foreach (var item in subjects)
-                        {
-                            <option value="@item.ID">@item.NAME</option>
-                        }
-                     </select>
+                    <input type="text" id="subject" name="subject" 
+                           autocomplete="off" class="layui-input" value="@Model.Subject?.NAME" disabled>
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     <span class="x-red">*</span>选择后将不可更改
@@ -72,17 +67,20 @@
                 <div class="layui-input-block">
                     @foreach (var item in roles)
                     {
-                        <input type="checkbox" name="Roles" lay-skin="primary" value="@item.ID" title="@item.NAME" >
+                        string isChecked = currentRoleIds.Contains(item.ID) ? "checked" : "";
+                        <input type="checkbox" name="Roles" lay-skin="primary" value="@item.ID" title="@item.NAME" @isChecked>
                     }
                 </div>
             </div>
+
+
             <div class="layui-form-item">
                 <label for="L_pass" class="layui-form-label">
                     <span class="x-red">*</span>密码
                 </label>
                 <div class="layui-input-inline">
                     <input type="password" id="L_pass" name="pass" required="" lay-verify="pass"
-                           autocomplete="off" class="layui-input">
+                           autocomplete="off" class="layui-input" value="@Model.User.PASSWORD">
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     6到16个字符
@@ -94,17 +92,18 @@
                 </label>
                 <div class="layui-input-inline">
                     <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
-                           autocomplete="off" class="layui-input">
+                           autocomplete="off" class="layui-input" value="@Model.User.PASSWORD">
                 </div>
             </div>
-            <input  type="hidden" name="userType" value="1" >
+            <input type="hidden" name="userType" value="1">
             <div class="layui-form-item">
                 <label for="L_repass" class="layui-form-label">
                 </label>
-                <button class="layui-btn" lay-filter="add" onclick=" return false;" lay-submit="">
-                    添加
+                <button class="layui-btn" lay-filter="edit" onclick=" return false;" lay-submit="">
+                    修改
                 </button>
             </div>
+
         </form>
     </div>
 </div>
@@ -124,7 +123,7 @@
                     }
                 },
                 realname: function(value) {
-                    if ($("#divName").css("display") != 'none' && value.length < 2) {
+                    if ( value.length < 2) {
                         return '姓名至少得2个字符啊';
                     }
                 },
@@ -135,13 +134,13 @@
                     }
                 },
                 customphone: function(value) {
-                    if ($("#divPhone").css("display") != 'none' && value) {
+                    if ( value) {
                         var b = /\d{11}/.test(value);
                         if (!b) return '请输入正确的手机号码';
                     }
                 },
                 customemail: function(value) {
-                    if ($("#divEmail").css("display") != 'none' && value) {
+                    if ( value) {
                         var reg = /[a-z0-9._%+-]+@("@")[a-z0-9.-]+\.[a-z]{2,63}$/;
                         var b = reg.test(value);
                         if (!b) return '请输入正确的邮箱';
@@ -151,19 +150,18 @@
             });
 
             //监听提交
-            form.on('submit(add)', function(data) {
-                 var SelectRoles = [];
-                    var selects =document.getElementsByName("Roles");
-                    for (i = 0; i < selects.length; i++) {
-                        if (selects[i].checked) {
-                            SelectRoles.push($(selects[i]).val()) ;
-                        }
+            form.on('submit(edit)', function(data) {
+                var SelectRoles = [];
+                var selects = document.getElementsByName("Roles");
+                for (i = 0; i < selects.length; i++) {
+                    if (selects[i].checked) {
+                        SelectRoles.push($(selects[i]).val());
                     }
-                    data.field.SelectRoles = SelectRoles;
-                //发异步，把数据提交给php
-                $.post("/Teacher/AddTeacher", data.field, function(ret) {
+                }
+                data.field.SelectRoles = SelectRoles;
+                $.post("/Teacher/EditTeacher?id=" + @Model.ID, data.field, function(ret) {
                     if (ret.Code == 0) {
-                        layer.alert("添加成功", {
+                        layer.alert("修改成功", {
                             icon: 6
                         },
                             function() {
@@ -181,11 +179,11 @@
                 });
             });
 
-          
+
 
         });
 
-    
+
 
 </script>
 

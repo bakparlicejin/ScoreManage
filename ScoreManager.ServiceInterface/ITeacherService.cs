@@ -23,5 +23,25 @@ namespace ScoreManager.ServiceInterface
         /// <param name="keyWords"></param>
         /// <returns></returns>
         int CountByKeyWords(TeacherListParameter keyWords);
+        /// <summary>
+        /// 根据id获取单个老师的全部信息  包括学科 角色
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        EDU_TEACHER GetFullInfoById(int id);
+        /// <summary>
+        /// 更新老师的用户密码，老师相关信息，角色相关信息
+        /// </summary>
+        /// <param name="teacher"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        bool UpdateFullInfo(EDU_TEACHER teacher, out string msg);
+        /// <summary>
+        /// 删除老师的一切信息 包括用户信息 角色信息 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        bool DeleteFullInfo(int id, out string msg);
     }
 }

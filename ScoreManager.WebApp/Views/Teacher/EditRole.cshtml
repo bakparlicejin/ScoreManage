@@ -28,7 +28,7 @@
                 <div class="layui-input-block">
                     @foreach (var item in actions)
                     {
-                        string checkStr = Model.ActionList.Any(c => c.ID == item.ID) ? "checked" : "";
+                        string checkStr = Model.Actions.Any(c => c.ID == item.ID) ? "checked" : "";
                         <input type="checkbox" @checkStr name="SelectActions" lay-skin="primary" value="@item.ID" title="@item.NAME" >
                     }
                 </div>

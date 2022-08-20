@@ -43,7 +43,7 @@ namespace Models
         /// <summary>
         /// 是否启用 0：不启用 1：启用 默认启用
         /// </summary>
-        public string ISENABLE { get; set; }
+        public string ISENABLE { get; set; } = "1";
 
         [Navigate(typeof(EDU_ROLE_ACTION), nameof(EDU_ROLE_ACTION.ACTIONID), nameof(EDU_ROLE_ACTION.ROLEID))]
         public List<EDU_ROLE> RoleList { get; set; }

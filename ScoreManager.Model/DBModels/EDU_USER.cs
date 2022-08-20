@@ -35,12 +35,16 @@ namespace Models
            /// </summary>           
            public string PASSWORD {get;set;}
 
-           /// <summary>
-           /// Desc:用户类型 0：管理员 1：老师 2：学生
-           /// Default:
-           /// Nullable:True
-           /// </summary>           
-           public short TYPE {get;set;}
+        /// <summary>
+        /// Desc:用户类型 0：管理员 1：老师 2：学生
+        /// Default:
+        /// Nullable:True
+        /// </summary>           
+        public short TYPE { get; set; }
+        /// <summary>
+        /// 是否启用 0：不启用 1：启用 默认启用
+        /// </summary>
+        public string ISENABLE { get; set; } = "1";
 
     }
 }

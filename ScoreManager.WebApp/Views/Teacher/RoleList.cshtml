@@ -29,9 +29,9 @@
                             @foreach (var item in Model)
                             {
                                 string actions = string.Empty;
-                                if (item.ActionList.Any())
+                                if (item.Actions.Any())
                                 {
-                                    actions = string.Join("，", item.ActionList.Select(c => c.NAME)); 
+                                    actions = string.Join("，", item.Actions.Select(c => c.NAME)); 
                                 }
                                 
                                 <tr>

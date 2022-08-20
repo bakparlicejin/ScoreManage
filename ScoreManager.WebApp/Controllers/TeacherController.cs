@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using ScoreManager.Model.Enum;
 using ScoreManager.Model.ViewParameters;
 using ScoreManager.ServiceInterface;
 using ScoreManager.WebApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,11 +17,15 @@ namespace ScoreManager.WebApp.Controllers
         private readonly IRoleService _roleService;
         private readonly IActionService _actionService;
         private readonly ITeacherService _teacherService;
-        public TeacherController(IRoleService roleService, IActionService actionService, ITeacherService teacherService)
+        private readonly ISubjectService _subjectService;
+        private readonly IUserService _userService;
+        public TeacherController(IRoleService roleService, IActionService actionService, ITeacherService teacherService, ISubjectService subjectService, IUserService userService)
         {
             _roleService = roleService;
             _actionService = actionService;
             _teacherService = teacherService;
+            _subjectService = subjectService;
+            _userService = userService;
         }
         #region 角色管理
         /// <summary>
@@ -28,7 +34,7 @@ namespace ScoreManager.WebApp.Controllers
         /// <returns></returns>
         public IActionResult RoleList()
         {
-            var data = _roleService.QueryWithAction(r => r.ActionList, r => true);
+            var data = _roleService.QueryWithAction(r => r.Actions, r => true);
             return View(data);
         }
         /// <summary>
@@ -54,13 +60,13 @@ namespace ScoreManager.WebApp.Controllers
             roleWithActions.NAME = addRoleParameter.RoleName;
             roleWithActions.DESCRIPTION = addRoleParameter.RoleDescription;
             roleWithActions.ISENABLE = addRoleParameter.IsEnable;
-            roleWithActions.ActionList = new List<EDU_ACTION>();
+            roleWithActions.Actions = new List<EDU_ACTION>();
             if (addRoleParameter.SelectActions!=null)
             {
                 foreach (var item in addRoleParameter.SelectActions)
                 {
                     EDU_ACTION temAction = new EDU_ACTION() { ID = item };
-                    roleWithActions.ActionList.Add(temAction);
+                    roleWithActions.Actions.Add(temAction);
                 }
             }
             
@@ -121,7 +127,7 @@ namespace ScoreManager.WebApp.Controllers
         /// <returns></returns>
         public IActionResult EditRole(int id)
         {
-            var role= _roleService.QueryWithAction(r => r.ActionList, r => r.ID==id).First();
+            var role= _roleService.QueryWithAction(r => r.Actions, r => r.ID==id).First();
             ViewData["Actions"]= _actionService.Query().Where(c => c.ISENABLE == "1");
             return View(role);
         }
@@ -136,16 +142,16 @@ namespace ScoreManager.WebApp.Controllers
         {
             ApiResult result = new ApiResult();
             string msg;
-            EDU_ROLE roleWithActions= _roleService.QueryWithAction(r => r.ActionList, r => r.ID == RoleId).First();
+            EDU_ROLE roleWithActions= _roleService.QueryWithAction(r => r.Actions, r => r.ID == RoleId).First();
             roleWithActions.DESCRIPTION = addRoleParameter.RoleDescription;
-            roleWithActions.ActionList?.Clear();
+            roleWithActions.Actions?.Clear();
             if (addRoleParameter.SelectActions!=null)
             {
-                roleWithActions.ActionList = new List<EDU_ACTION>();
+                roleWithActions.Actions = new List<EDU_ACTION>();
                 foreach (var item in addRoleParameter.SelectActions)
                 {
                     EDU_ACTION temAction = new EDU_ACTION() { ID = item };
-                    roleWithActions.ActionList.Add(temAction);
+                    roleWithActions.Actions.Add(temAction);
                 }
             }
             
@@ -245,7 +251,7 @@ namespace ScoreManager.WebApp.Controllers
         /// <returns></returns>
         public IActionResult TeacherList()
         {
-
+           
             return View();
         }
         /// <summary>
@@ -280,7 +286,131 @@ namespace ScoreManager.WebApp.Controllers
         /// <returns></returns>
         public IActionResult AddTeacher()
         {
+            //查询学科信息
+            var subjectList = _subjectService.Query();
+            ViewBag.Subjects = subjectList;
+            //查询角色信息
+            var roles= _roleService.Query().Where(c => c.ISENABLE == "1")?.ToList();
+            ViewBag.Roles = roles;
             return View();
+        }
+        [HttpPost]
+        public IActionResult AddTeacher(AddTeacherParameter parameters)
+        {
+            ApiResult apiResult = new ApiResult() { Code = 0 };
+            try
+            {
+                //先查
+                bool isExist = _userService.IsExist(parameters.UserName);
+                if (isExist)
+                {
+                    apiResult.Code = -1;
+                    apiResult.Message = "用户名已被使用";
+                    return Json(apiResult);
+                }
+                _userService.TransactionOperation(c =>
+                {
+
+                    //1. 先增加用户
+                    EDU_USER user = new EDU_USER()
+                    {
+                        USERNAME = parameters.UserName,
+                        PASSWORD = parameters.Pass,
+                        TYPE = parameters.UserType
+                    };
+                    int userId = c.Insertable<EDU_USER>(user).ExecuteReturnIdentity();
+
+                    //2. 增加老师
+                    
+                    EDU_TEACHER teacher = new EDU_TEACHER();
+                    teacher.USERID = userId;
+                    teacher.NAME = parameters.RealName;
+                    teacher.PHONE_NUMBER = parameters.Phone;
+                    teacher.EMAIL_ADDRESS = parameters.Email;
+                    teacher.SUBJECTID = parameters.Subject;
+                    teacher.Roles = new List<EDU_ROLE>();
+                    if (parameters.SelectRoles != null)
+                    {
+                        foreach (var item in parameters.SelectRoles)
+                        {
+                            EDU_ROLE temAction = new EDU_ROLE() { ID = item };
+                            teacher.Roles.Add(temAction);
+                        }
+                    }
+                    c.InsertNav<EDU_TEACHER>(teacher).Include(x => x.Roles).ExecuteCommand();
+                });
+            }
+            catch (Exception ex)
+            {
+                apiResult.Message = "创建教师失败";
+                apiResult.Code = -1;
+            }
+            return Json(apiResult);
+        }
+        /// <summary>
+        /// 编辑老师
+        /// </summary>
+        /// <param name="id">主键id</param>
+        /// <returns></returns>
+        public IActionResult EditTeacher(int id)
+        {
+            EDU_TEACHER teacher= _teacherService.GetFullInfoById(id);
+            //查询角色信息
+            var roles = _roleService.Query().Where(c => c.ISENABLE == "1")?.ToList();
+            ViewBag.Roles = roles;
+            return View(teacher);
+        }
+        [HttpPost]
+        public IActionResult EditTeacher(int id, AddTeacherParameter parameters)
+        {
+            ApiResult result = new ApiResult();
+            EDU_TEACHER teacher = _teacherService.GetFullInfoById(id);
+            teacher.PHONE_NUMBER = parameters.Phone;
+            teacher.NAME = parameters.RealName;
+            teacher.EMAIL_ADDRESS = parameters.Email;
+            teacher.Roles?.Clear();
+
+            if (parameters.SelectRoles != null)
+            {
+                teacher.Roles = new List<EDU_ROLE>();
+                foreach (var item in parameters.SelectRoles)
+                {
+                    EDU_ROLE temAction = new EDU_ROLE() { ID = item };
+                    teacher.Roles.Add(temAction);
+                }
+            }
+            teacher.User.PASSWORD = parameters.Pass;
+            string msg;
+            bool isSuccess= _teacherService.UpdateFullInfo(teacher, out msg);
+            if (isSuccess)
+            {
+                result.Code = 0;
+            }
+            else
+            {
+                result.Code = -1;
+                result.Message = msg;
+            }
+
+            return Json(result);
+        }
+        [HttpPost]
+        public IActionResult DeleteFullInfo(int id)
+        {
+            string msg;
+            ApiResult result = new ApiResult();
+            bool isSuccess= _teacherService.DeleteFullInfo(id, out msg);
+            if (isSuccess)
+            {
+                result.Code = 0;
+            }
+            else
+            {
+                result.Code = -1;
+                result.Message = msg;
+            }
+
+            return Json(result);
         }
         #endregion
     }

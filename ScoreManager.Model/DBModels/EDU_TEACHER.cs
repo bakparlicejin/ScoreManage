@@ -58,11 +58,20 @@ namespace Models
            /// </summary>           
            public long SUBJECTID {get;set;}
 
+        /// <summary>
+        /// 是否启用 0：不启用 1：启用 默认启用
+        /// </summary>
+        public string ISENABLE { get; set; } = "1";
+
         [Navigate(NavigateType.OneToOne, nameof(USERID))]//一对一 
         public EDU_USER User { get; set; }
 
         [Navigate(typeof(EDU_TEACHER_ROLE), nameof(EDU_TEACHER_ROLE.TEACHERID), nameof(EDU_TEACHER_ROLE.ROLEID))]//注意顺序
         public List<EDU_ROLE> Roles { get; set; }//只能是null不能赋默认值
+
+
+        [Navigate(NavigateType.ManyToOne, nameof(SUBJECTID))]
+        public EDU_SUBJECT Subject { get; set; }
 
     }
 }

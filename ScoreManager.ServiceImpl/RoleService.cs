@@ -40,7 +40,7 @@ namespace ScoreManager.ServiceImpl
         {
             try
             {
-                _sqlSugarClient.InsertNav(roleWithActions).Include(c => c.ActionList).ExecuteCommand();
+                _sqlSugarClient.InsertNav(roleWithActions).Include(c => c.Actions).ExecuteCommand();
                 msg = "";
                 return true;
 
@@ -60,7 +60,7 @@ namespace ScoreManager.ServiceImpl
         /// <returns></returns>
         public bool DeleteRoleWithRelation(int id)
         {
-            return _sqlSugarClient.DeleteNav<EDU_ROLE>(c => c.ID == id).Include(c => c.ActionList, new DeleteNavOptions() { ManyToManyIsDeleteA = true }).ExecuteCommand();
+            return _sqlSugarClient.DeleteNav<EDU_ROLE>(c => c.ID == id).Include(c => c.Actions, new DeleteNavOptions() { ManyToManyIsDeleteA = true }).ExecuteCommand();
         }
 
         /// <summary>
@@ -77,10 +77,10 @@ namespace ScoreManager.ServiceImpl
                 {
                     client.Updateable<EDU_ROLE>(roleWithActions).ExecuteCommand();
                     client.Deleteable<EDU_ROLE_ACTION>(c=>c.ROLEID==roleWithActions.ID).ExecuteCommand();
-                    if (roleWithActions.ActionList!=null&&roleWithActions.ActionList.Any())
+                    if (roleWithActions.Actions!=null&&roleWithActions.Actions.Any())
                     {
                         List<EDU_ROLE_ACTION> role_actions=new List<EDU_ROLE_ACTION>();
-                        foreach (var item in roleWithActions.ActionList)
+                        foreach (var item in roleWithActions.Actions)
                         {
                             EDU_ROLE_ACTION eDU_ROLE_ACTION = new EDU_ROLE_ACTION() { ACTIONID = item.ID, ROLEID = roleWithActions.ID };
                             role_actions.Add(eDU_ROLE_ACTION);

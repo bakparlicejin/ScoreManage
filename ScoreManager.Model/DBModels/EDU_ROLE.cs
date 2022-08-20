@@ -41,12 +41,12 @@ namespace Models
         /// 添加时间
         /// </summary>
         public DateTime ADDTIME { get; set; }
-            /// <summary>
-            /// 是否启用 0：不启用 1：启用 默认启用
-            /// </summary>
-            public string ISENABLE { get; set; }
+        /// <summary>
+        /// 是否启用 0：不启用 1：启用 默认启用
+        /// </summary>
+        public string ISENABLE { get; set; } = "1";
         [Navigate(typeof(EDU_ROLE_ACTION), nameof(EDU_ROLE_ACTION.ROLEID), nameof(EDU_ROLE_ACTION.ACTIONID))]
-        public List<EDU_ACTION> ActionList { get; set; }
+        public List<EDU_ACTION> Actions { get; set; }
 
 
         [Navigate(typeof(EDU_TEACHER_ROLE), nameof(EDU_TEACHER_ROLE.ROLEID), nameof(EDU_TEACHER_ROLE.TEACHERID))]//注意顺序

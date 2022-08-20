@@ -19,7 +19,7 @@ namespace ScoreManager.ServiceImpl
 
         public EDU_USER GetUserByNameAndPass(string userName, string passWord)
         {
-            return _sqlSugarClient.Queryable<EDU_USER>().Single(c => c.USERNAME == userName && c.PASSWORD == passWord);
+            return _sqlSugarClient.Queryable<EDU_USER>().Single(c => c.USERNAME == userName && c.PASSWORD == passWord&&c.ISENABLE=="1");
         }
 
         public bool IsExist(string userName)
