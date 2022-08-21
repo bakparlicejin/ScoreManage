@@ -1,0 +1,48 @@
+﻿@using Models
+@using Newtonsoft.Json
+@{
+    List<EDU_TEACHER> allEnableTeachers = ViewBag.AllEnableTeachers as List<EDU_TEACHER>;
+    List<EDU_TEACHER> currentSubjectTeachers = ViewBag.CurrentSubjectTeachers as List<EDU_TEACHER>;
+    int subjectId = Convert.ToInt32(ViewBag.SubjectId);
+    var allData = JsonConvert.SerializeObject(allEnableTeachers?.Select(c => new { value = c.ID, title = c.NAME }), new JsonSerializerSettings() { });
+    var rightValue = JsonConvert.SerializeObject(currentSubjectTeachers?.Select(c => c.ID));
+}
+@*<link rel="stylesheet" href="/resource/lib/layui/css/layui.css">*@
+@*<script src="/resource/lib/layui/layui.js" charset="utf-8"></script>*@
+<div id="divData" style="margin:20px 10px"></div>
+
+
+<script>
+    layui.use(['transfer', 'layer', 'util'], function() {
+        var $ = layui.$
+            , transfer = layui.transfer
+            , layer = layui.layer
+            , util = layui.util;
+
+
+
+
+        transfer.render({
+            elem: '#divData'
+            , data: @Html.Raw(allData)
+                    , title: ['待分配学科老师', '当前学科老师']
+            , showSearch: true
+            , value: @Html.Raw(rightValue)
+                    , onchange: function(obj, index) {
+                //var arr = ['左边', '右边'];
+                //layer.alert('来自 <strong>' + arr[index] + '</strong> 的数据：' + JSON.stringify(obj)); //获得被穿梭时的数据
+                var ids = [];
+                for (i = 0; i < obj.length; i++) {
+                    ids.push(obj[i].value);
+                }
+                $.post("/Subject/EditTeacher", { "type": index, "ids": ids ,"subjectId":@subjectId}, function(ret) {
+                    if (ret.Code == 0) {
+                        layer.msg('设置成功!', { icon: 6, time: 1000 });
+                    } else {
+                        layer.msg(ret.Message, { icon: 5, time: 1000 });
+                    }
+                })
+            }
+        })
+    })
+</script>

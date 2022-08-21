@@ -59,9 +59,9 @@ namespace Models
            public long SUBJECTID {get;set;}
 
         /// <summary>
-        /// 是否启用 0：不启用 1：启用 默认启用
+        /// 是否已删除 0：已删除 1：未删除 默认未删除
         /// </summary>
-        public string ISENABLE { get; set; } = "1";
+        public string ISDELETE { get; set; } = "1";
 
         [Navigate(NavigateType.OneToOne, nameof(USERID))]//一对一 
         public EDU_USER User { get; set; }

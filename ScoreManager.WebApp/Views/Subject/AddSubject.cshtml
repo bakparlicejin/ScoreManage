@@ -1,0 +1,81 @@
+﻿
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label for="SubjectName" class="layui-form-label">
+                    <span class="x-red">*</span>学科名称
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="SubjectName" name="SubjectName" required="" lay-verify="subjectname" autocomplete="off" class="layui-input">
+                </div>
+
+            </div>
+            <div class="layui-form-item">
+                <label for="ActionDescription" class="layui-form-label">
+                    学科描述
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="SubjectDescription" name="SubjectDescription" required=""  autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否启用</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" name="IsEnable" lay-skin="switch" checked value="1" lay-text="启用|禁用">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="L_repass" class="layui-form-label"></label>
+                <button class="layui-btn" lay-filter="add" onclick="    return false;" lay-submit="">增加</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['form', 'layer', 'jquery'],
+        function() {
+            $ = layui.jquery;
+            var form = layui.form,
+                layer = layui.layer;
+
+            //自定义验证规则
+            form.verify({
+                subjectname: function(value) {
+                    if (value.length < 2) {
+                        return '学科名称至少得2个字符啊';
+                    }
+                }
+            });
+
+            //监听提交
+            form.on('submit(add)',
+                function(data) {
+                    $.post("/Subject/AddSubject", data.field, function(ret) {
+                    debugger;
+
+                        if (ret.Code == 0) {
+                            layer.alert("添加成功", {
+                                icon: 6
+                            },
+                                function() {
+                                    //关闭当前frame
+                                    xadmin.close();
+
+                                    // 可以对父窗口进行刷新
+                                    xadmin.father_reload();
+                                });
+                            return false;
+                        } else {
+                            layer.alert(ret.Message, {
+                                icon: 5
+                            });
+                        }
+                    })
+                });
+
+        });
+</script>
+
+

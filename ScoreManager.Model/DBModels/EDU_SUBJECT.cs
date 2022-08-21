@@ -27,6 +27,20 @@ namespace Models
            /// Nullable:True
            /// </summary>           
            public string NAME {get;set;}
+        /// <summary>
+        /// Desc:权限描述
+        /// Default:
+        /// Nullable:True
+        /// </summary>           
+        public string DESCRIPTION { get; set; }
+        /// <summary>
+        /// 添加时间
+        /// </summary>
+        public DateTime ADDTIME { get; set; }
+        /// <summary>
+        /// 是否启用 0：不启用 1：启用 默认启用
+        /// </summary>
+        public string ISENABLE { get; set; } = "1";
 
     }
 }

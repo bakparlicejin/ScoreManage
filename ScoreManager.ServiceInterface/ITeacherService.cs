@@ -1,4 +1,5 @@
 ﻿using Models;
+using ScoreManager.Model.Enum;
 using ScoreManager.Model.ViewParameters;
 using System;
 using System.Collections.Generic;
@@ -43,5 +44,14 @@ namespace ScoreManager.ServiceInterface
         /// <param name="msg"></param>
         /// <returns></returns>
         bool DeleteFullInfo(int id, out string msg);
+        /// <summary>
+        /// 批量更新老师的学科信息
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="ids"></param>
+        /// <param name="subjectId"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        bool BatchUpdateSubjectId(string type, List<long> ids, int subjectId, out string msg);
     }
 }

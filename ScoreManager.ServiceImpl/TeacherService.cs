@@ -1,4 +1,5 @@
 ﻿using Models;
+using ScoreManager.Model.Enum;
 using ScoreManager.Model.ViewParameters;
 using ScoreManager.ServiceInterface;
 using SqlSugar;
@@ -29,7 +30,7 @@ namespace ScoreManager.ServiceImpl
                 .Includes(x => x.User)
                 .Includes(x => x.Roles)
                 .Includes(x => x.Subject)
-                .Where(x=>(x.User.USERNAME.Contains(parameter.KeyWords)||x.NAME.Contains(parameter.KeyWords) )&& x.ISENABLE == "1")
+                .Where(x=>(x.User.USERNAME.Contains(parameter.KeyWords)||x.NAME.Contains(parameter.KeyWords) )&& x.ISDELETE == "1")
                 .ToPageList(parameter.PageIndex,parameter.PageSize,ref totalCount);
 
         }
@@ -44,7 +45,7 @@ namespace ScoreManager.ServiceImpl
             return _sqlSugarClient.Queryable<EDU_TEACHER>()
                 .Includes(x => x.User)
                 .Includes(x => x.Roles)
-                .Where(x => (x.User.USERNAME.Contains(parameter.KeyWords) || x.NAME.Contains(parameter.KeyWords))&&x.ISENABLE=="1").Count();
+                .Where(x => (x.User.USERNAME.Contains(parameter.KeyWords) || x.NAME.Contains(parameter.KeyWords))&&x.ISDELETE=="1").Count();
         }
 
 
@@ -125,7 +126,7 @@ namespace ScoreManager.ServiceImpl
 
                 TransactionOperation(c => {
                     var teacher= c.Queryable<EDU_TEACHER>().Single(c => c.ID == id);
-                    teacher.ISENABLE = "0";
+                    teacher.ISDELETE = "0";
                     var user= c.Queryable<EDU_USER>().Single(c => c.ID == teacher.USERID);
                     user.ISENABLE = "0";
                     //删除角色中间表
@@ -144,5 +145,43 @@ namespace ScoreManager.ServiceImpl
                 throw;
             }
         }
+        /// <summary>
+        /// 批量更新老师的学科信息
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="ids"></param>
+        /// <param name="subjectId"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public bool BatchUpdateSubjectId(string type, List<long> ids, int subjectId, out string msg)
+        {
+            msg = "";
+            List<EDU_TEACHER> teachers= _sqlSugarClient.Queryable<EDU_TEACHER>().Where(c => ids.Contains(c.ID))?.ToList();
+            foreach (var item in teachers)
+            {
+                if (type == "0")//新增
+                {
+                    item.SUBJECTID = subjectId;
+
+                }
+                else//去掉
+                {
+                    item.SUBJECTID = 0;
+                }
+            }
+            try
+            {
+                return _sqlSugarClient.Updateable<EDU_TEACHER>(teachers).ExecuteCommand() > 0;
+            }
+            catch (Exception ex)
+            {
+
+                msg = ex.Message;
+                return false;
+            }
+           
+        }
+
+
     }
 }
