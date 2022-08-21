@@ -28,6 +28,10 @@ namespace Models
            /// Nullable:False
            /// </summary>           
            public long CLASSID {get;set;}
+        /// <summary>
+        /// 教师角色Id
+        /// </summary>
+        public long ROLEID { get; set; }
 
     }
 }

@@ -1,0 +1,112 @@
+﻿@using Models
+@using Newtonsoft.Json
+@{
+    List<EDU_TEACHER> teachers = ViewBag.Teachers as List<EDU_TEACHER>;
+    var masterTeachers=  teachers.Where(c => c.Roles.Any(x => x.NAME == "班主任"))?.Select(c => new { name = c.NAME, value = c.ID });
+    var subjectTeachers= teachers.Where(c => c.Roles.Any(x => x.NAME == "学科老师"))?.Select(c => new { name = c.NAME, value = c.ID });
+    string jsonStrMaster = JsonConvert.SerializeObject(masterTeachers);
+    string jsonStrSubject = JsonConvert.SerializeObject(subjectTeachers);
+
+}
+<script src="/resource/lib/layui/xm-select.js"></script>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label for="ClassName" class="layui-form-label">
+                    <span class="x-red">*</span>班级名称
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="ClassName" name="ClassName" required="" lay-verify="classname" autocomplete="off" class="layui-input">
+                </div>
+
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">班主任老师</label>
+                <div class="layui-input-inline">
+                    <div id="divMasterTeacher"></div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">学科老师</label>
+                <div class="layui-input-inline">
+                    <div id="divSubjectTeacher"></div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否启用</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" name="IsEnable" lay-skin="switch" checked value="1" lay-text="启用|禁用">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="L_repass" class="layui-form-label"></label>
+                <button class="layui-btn" lay-filter="add" onclick="    return false;" lay-submit="">增加</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+
+    var masterTeacher= xmSelect.render({
+        el: '#divMasterTeacher',
+        language: 'zn',
+        filterable: true,
+        radio: true,
+        data: @Html.Raw( jsonStrMaster)
+    });
+    var subjectTeachers= xmSelect.render({
+        el: '#divSubjectTeacher',
+        language: 'zn',
+        filterable: true,
+        data: @Html.Raw(jsonStrSubject)
+    });
+    layui.use(['form', 'layer', 'jquery'],
+        function() {
+            $ = layui.jquery;
+            var form = layui.form,
+                layer = layui.layer;
+
+            //自定义验证规则
+            form.verify({
+                classname: function(value) {
+                    if (value.length < 2) {
+                        return '班级名称至少得2个字符啊';
+                    }
+                }
+            });
+
+            //监听提交
+            form.on('submit(add)',
+                function(data) {
+                    data.field.MasterTeacherId = masterTeacher.getValue('value');
+                    data.field.SubjectTeacherIds = subjectTeachers.getValue('value');
+
+                    $.post("/Class/AddClass", data.field, function(ret) {
+                        debugger;
+                        
+                        if (ret.Code == 0) {
+                            layer.alert("添加成功", {
+                                icon: 6
+                            },
+                                function() {
+                                    //关闭当前frame
+                                    xadmin.close();
+
+                                    // 可以对父窗口进行刷新
+                                    xadmin.father_reload();
+                                });
+                            return false;
+                        } else {
+                            layer.alert(ret.Message, {
+                                icon: 5
+                            });
+                        }
+                    })
+                });
+
+        });
+</script>
+
+

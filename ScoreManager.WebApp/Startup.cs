@@ -44,6 +44,7 @@ namespace ScoreManager
             services.AddScoped<IActionService, ActionService>();
             services.AddScoped<ITeacherService, TeacherService>();
             services.AddScoped<ISubjectService, SubjectService>();
+            services.AddScoped<IClassService, ClassService>();
             services.AddScoped<ISqlSugarClient>(option =>
             {
                 SqlSugarClient client = new SqlSugarClient(new ConnectionConfig()

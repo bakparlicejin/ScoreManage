@@ -48,7 +48,17 @@ namespace ScoreManager.ServiceImpl
                 .Where(x => (x.User.USERNAME.Contains(parameter.KeyWords) || x.NAME.Contains(parameter.KeyWords))&&x.ISDELETE=="1").Count();
         }
 
-
+        /// <summary>
+        /// 查询老师 带上角色信息
+        /// </summary>
+        /// <returns></returns>
+        public  List<EDU_TEACHER> GetTeacherListWithRole()
+        {
+            return _sqlSugarClient.Queryable<EDU_TEACHER>()
+               .Includes(x => x.Roles)
+               .Where(x =>  x.ISDELETE == "1")?
+               .ToList();
+        }
         /// <summary>
         /// 根据id获取单个老师的全部信息  包括学科 角色
         /// </summary>

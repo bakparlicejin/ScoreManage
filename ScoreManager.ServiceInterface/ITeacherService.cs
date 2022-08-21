@@ -25,6 +25,12 @@ namespace ScoreManager.ServiceInterface
         /// <returns></returns>
         int CountByKeyWords(TeacherListParameter keyWords);
         /// <summary>
+        /// 查询老师 带上角色信息
+        /// </summary>
+        /// <returns></returns>
+        List<EDU_TEACHER> GetTeacherListWithRole();
+
+        /// <summary>
         /// 根据id获取单个老师的全部信息  包括学科 角色
         /// </summary>
         /// <param name="id"></param>
