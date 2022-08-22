@@ -1,5 +1,4 @@
 ﻿using Models;
-using ScoreManager.DalInterface;
 using ScoreManager.Model.ViewParameters;
 using ScoreManager.ServiceInterface;
 using SqlSugar;

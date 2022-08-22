@@ -5,8 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using ScoreManager.DalImpl;
-using ScoreManager.DalInterface;
 using ScoreManager.ServiceImpl;
 using ScoreManager.ServiceInterface;
 using SqlSugar;
