@@ -13,20 +13,19 @@ namespace Models
 
 
            }
-        
            /// <summary>
-           /// Desc:角色id
+           /// Desc:
            /// Default:
            /// Nullable:False
            /// </summary>           
-           public long ROLEID {get;set;}
+           public decimal ROLEID {get;set;}
 
            /// <summary>
-           /// Desc:权限id
+           /// Desc:
            /// Default:
            /// Nullable:False
            /// </summary>           
-           public long ACTIONID {get;set;}
+           public decimal ACTIONID {get;set;}
 
     }
 }

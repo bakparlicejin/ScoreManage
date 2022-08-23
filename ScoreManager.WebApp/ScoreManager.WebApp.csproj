@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ScoreManager.DalImpl\ScoreManager.DalImpl.csproj" />
     <ProjectReference Include="..\ScoreManager.ServiceImpl\ScoreManager.ServiceImpl.csproj" />
     <ProjectReference Include="..\ScoreManager.ServiceInterface\ScoreManager.ServiceInterface.csproj" />
   </ItemGroup>

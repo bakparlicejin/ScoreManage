@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ScoreManager.DalInterface\ScoreManager.DalInterface.csproj" />
     <ProjectReference Include="..\ScoreManager.ServiceInterface\ScoreManager.ServiceInterface.csproj" />
   </ItemGroup>
 

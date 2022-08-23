@@ -15,7 +15,7 @@ namespace CodeFirstConsole
                 #region 实体生成数据库和表
 
                 //数据库链接字符串
-                string ConnectionString2 = "Data Source=orcl;User ID=scott;Password=Comeon007;";
+                string ConnectionString2 = "User Id=scott;Password=456258;Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=127.0.0.1)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;Connection Timeout=20;";
 
                 ConnectionConfig config2 = new ConnectionConfig()
                 {
@@ -35,7 +35,7 @@ namespace CodeFirstConsole
                 bool Backup = false;  //是否备份
                 using (SqlSugarClient Client = new SqlSugarClient(config2))
                 {
-                    Client.DbMaintenance.CreateDatabase(); //创建一个数据库出来
+                    //Client.DbMaintenance.CreateDatabase(); //创建一个数据库出来
                     if (Backup)
                     {
                         Client.CodeFirst.BackupTable().InitTables(typelist.ToArray());

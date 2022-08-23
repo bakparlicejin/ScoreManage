@@ -13,21 +13,19 @@ namespace Models
 
 
            }
-       
-
            /// <summary>
-           /// Desc:教师id
+           /// Desc:
            /// Default:
            /// Nullable:False
            /// </summary>           
-           public long TEACHERID {get;set;}
+           public decimal TEACHERID {get;set;}
 
            /// <summary>
-           /// Desc:角色id
+           /// Desc:
            /// Default:
            /// Nullable:False
            /// </summary>           
-           public long ROLEID {get;set;}
+           public decimal ROLEID {get;set;}
 
     }
 }

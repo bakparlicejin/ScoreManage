@@ -13,38 +13,40 @@ namespace Models
 
 
            }
-        /// <summary>
-        /// Desc:主键
-        /// Default:
-        /// Nullable:False
-        /// </summary>           
-        [SqlSugar.SugarColumn(IsPrimaryKey = true, OracleSequenceName = "SEQ_ID")]
-        public long ID {get;set;}
+           /// <summary>
+           /// Desc:
+           /// Default:
+           /// Nullable:False
+           /// </summary>           
+           public decimal ID {get;set;}
 
            /// <summary>
-           /// Desc:登录名称
+           /// Desc:
            /// Default:
            /// Nullable:False
            /// </summary>           
            public string USERNAME {get;set;}
 
            /// <summary>
-           /// Desc:密码
+           /// Desc:
            /// Default:
            /// Nullable:False
            /// </summary>           
            public string PASSWORD {get;set;}
 
-        /// <summary>
-        /// Desc:用户类型 0：管理员 1：老师 2：学生
-        /// Default:
-        /// Nullable:True
-        /// </summary>           
-        public short TYPE { get; set; }
-        /// <summary>
-        /// 是否启用 0：不启用 1：启用 默认启用
-        /// </summary>
-        public string ISENABLE { get; set; } = "1";
+           /// <summary>
+           /// Desc:
+           /// Default:
+           /// Nullable:False
+           /// </summary>           
+           public decimal TYPE {get;set;}
+
+           /// <summary>
+           /// Desc:
+           /// Default:
+           /// Nullable:False
+           /// </summary>           
+           public string ISENABLE {get;set;}
 
     }
 }

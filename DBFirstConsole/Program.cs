@@ -8,7 +8,7 @@ namespace DBFirstConsole
         static void Main(string[] args)
         {
             //数据库链接字符串
-            string ConnectionString1 = "Data Source=orcl;User ID=scott;Password=Comeon007;";
+            string ConnectionString1 = "User Id=scott;Password=456258;Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=127.0.0.1)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=orcl)));Persist Security Info=True;Connection Timeout=20;";
 
             ConnectionConfig config = new ConnectionConfig()
             {
@@ -21,7 +21,7 @@ namespace DBFirstConsole
             {
                 //生成所有的表对应实体
                 {
-                    Client.DbFirst.CreateClassFile(@"C:\Users\Administrator\Desktop\ScoreManagerSys\ScoreManager\ScoreManager.Model\DBModels");
+                    Client.DbFirst.CreateClassFile(@"D:\Desktop\ScoreManager(3)\ScoreManager\ScoreManager.Model\DBModels");
                 }
                 //{
                 //    //条件筛选--生成实体
